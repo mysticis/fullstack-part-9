@@ -1,0 +1,17 @@
+{
+  "name": "part-9-ts",
+  "version": "1.0.0",
+  "description": "Typescript Practice",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node",
+    "getbmi": "ts-node bmiCalculator.ts"
+  },
+  "author": "Joe Martin",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.13.5",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.8.3"
+  }
+}
