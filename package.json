@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "ts-node": "ts-node",
-    "getbmi": "ts-node bmiCalculator.ts"
+    "getbmi": "ts-node bmiCalculator.ts",
+    "exerciseCalculator": "ts-node exerciseCalculator.ts"
   },
   "author": "Joe Martin",
   "license": "ISC",
