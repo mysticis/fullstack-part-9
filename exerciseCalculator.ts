@@ -1,3 +1,7 @@
+interface ParseArguments {
+  targetHoursPerDay: number
+  daysTrained: Array<number>
+}
 interface CalulatedResult {
   periodLength: number
   trainingDays: number
@@ -7,19 +11,36 @@ interface CalulatedResult {
   target: number
   average: number
 }
-
-const calculateResults = (
-  list: Array<number>,
-  targetHoursPerDay: number
-): CalulatedResult => {
-  const averageHour = (list: Array<number>) => {
-    return list.reduce((acc, cur) => acc + cur) / list.length
+const parseData = (args: Array<number>): ParseArguments => {
+  console.log(args)
+  if (isNaN(args[0])) {
+    throw new Error(`Argument you entered is not a number!`)
   }
-  const ratingValue = (list: Array<number>) => {
-    return Math.round(list.reduce((acc, cur) => acc + cur) / list.length)
+  if (args.length < 10) throw new Error("Not enough arguments")
+  if (args.length > 10) throw new Error("Too many arguments")
+  if (args.every((e) => isNaN(e))) {
+    throw new Error("Only numbers should be entered")
+  } else {
+    return {
+      targetHoursPerDay: Number(args[0]),
+      daysTrained: args.splice(1),
+    }
+  }
+}
+const calculateResults = (
+  targetHoursPerDay: number,
+  daysTrained: Array<number>
+): CalulatedResult => {
+  const averageHour = (daysTrained: Array<number>) => {
+    return daysTrained.reduce((acc, cur) => acc + cur) / daysTrained.length
+  }
+  const ratingValue = (daysTrained: Array<number>) => {
+    return Math.round(
+      daysTrained.reduce((acc, cur) => acc + cur) / daysTrained.length
+    )
   }
   const isSuccess = () => {
-    if (averageHour(list) < targetHoursPerDay) {
+    if (averageHour(daysTrained) < targetHoursPerDay) {
       return false
     } else {
       return true
@@ -36,17 +57,20 @@ const calculateResults = (
   }
 
   return {
-    periodLength: list.length,
-    trainingDays: list.filter((num) => num !== 0).length,
+    periodLength: daysTrained.length,
+    trainingDays: daysTrained.filter((num) => num !== 0).length,
     success: isSuccess(),
-    rating: ratingValue(list),
-    ratingDescription: ratingRemarks(averageHour(list)),
+    rating: ratingValue(daysTrained),
+    ratingDescription: ratingRemarks(averageHour(daysTrained)),
     target: targetHoursPerDay,
-    average: averageHour(list),
+    average: averageHour(daysTrained),
   }
 }
 try {
-  console.log(calculateResults([1, 0, 2, 4.5, 0, 3, 1, 0, 4], 2))
+  const argsToParse = process.argv.splice(2).map(Number)
+  console.log(argsToParse)
+  const { targetHoursPerDay, daysTrained } = parseData(argsToParse)
+  console.log(calculateResults(targetHoursPerDay, daysTrained))
 } catch (error) {
   console.log("Error, something bad happened, message: ", error.message)
 }
