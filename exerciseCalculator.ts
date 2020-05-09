@@ -12,7 +12,6 @@ interface CalulatedResult {
   average: number
 }
 const parseData = (args: Array<number>): ParseArguments => {
-  console.log(args)
   if (isNaN(args[0])) {
     throw new Error(`Argument you entered is not a number!`)
   }
@@ -68,7 +67,6 @@ const calculateResults = (
 }
 try {
   const argsToParse = process.argv.splice(2).map(Number)
-  console.log(argsToParse)
   const { targetHoursPerDay, daysTrained } = parseData(argsToParse)
   console.log(calculateResults(targetHoursPerDay, daysTrained))
 } catch (error) {
