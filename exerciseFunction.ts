@@ -1,33 +1,25 @@
-export {}
-interface ParseArguments {
-  targetHoursPerDay: number
-  daysTrained: Array<number>
-}
+export default {}
+
 interface CalulatedResult {
   periodLength: number
   trainingDays: number
   success: boolean
   rating: number
-  ratingD: string
+  ratingDescription: string
   target: number
   average: number
 }
-const parseData = (args: Array<number>): ParseArguments => {
-  if (isNaN(args[0])) {
-    throw new Error(`Argument you entered is not a number!`)
-  }
-  if (args.length < 10) throw new Error("Not enough arguments")
-  if (args.length > 10) throw new Error("Too many arguments")
-  if (args.every((e) => isNaN(e))) {
-    throw new Error("Only numbers should be entered")
+export const parseDataArray = (days: Array<number>): boolean => {
+  return days.every((e) => isNaN(e))
+}
+export const parseTargetData = (target: number): boolean => {
+  if (isNaN(target)) {
+    return true
   } else {
-    return {
-      targetHoursPerDay: Number(args[0]),
-      daysTrained: args.splice(1),
-    }
+    return false
   }
 }
-const calculateResults = (
+export const calculateResultsWeb = (
   targetHoursPerDay: number,
   daysTrained: Array<number>
 ): CalulatedResult => {
@@ -47,14 +39,14 @@ const calculateResults = (
     }
   }
   const ratingRemarks = (averageHour: number) => {
-    if (averageHour === 1) {
+    if (averageHour < 2) {
       return `Poor performance, you'll need to improve!`
-    } else if (averageHour >= 1 && averageHour <= 2) {
+    } else if (averageHour >= 2) {
       return `Not too bad but could be better!`
     } else if (averageHour >= 3) {
       return `Excellent performance, target achieved!`
     } else {
-      return `Invalid info`
+      return `Not enough info!`
     }
   }
 
@@ -63,15 +55,8 @@ const calculateResults = (
     trainingDays: daysTrained.filter((num) => num !== 0).length,
     success: isSuccess(),
     rating: ratingValue(daysTrained),
-    ratingD: ratingRemarks(averageHour(daysTrained)),
+    ratingDescription: ratingRemarks(averageHour(daysTrained)),
     target: targetHoursPerDay,
     average: averageHour(daysTrained),
   }
-}
-try {
-  const argsToParse = process.argv.splice(2).map(Number)
-  const { targetHoursPerDay, daysTrained } = parseData(argsToParse)
-  console.log(calculateResults(targetHoursPerDay, daysTrained))
-} catch (error) {
-  console.log("Error, something bad happened, message: ", error.message)
 }
