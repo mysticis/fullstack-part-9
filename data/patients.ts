@@ -1,5 +1,7 @@
 import { PatientData } from "../types";
-const patientData: Array<PatientData> = [
+import parsePatientData from "../utils/parsePatientData";
+
+const data = [
   {
     id: "d2773336-f723-11e9-8f0b-362b9e155667",
     name: "John McClane",
@@ -41,4 +43,10 @@ const patientData: Array<PatientData> = [
     occupation: "Digital evangelist",
   },
 ];
-export default patientData;
+const patientEntries: PatientData[] = data.map((obj) => {
+  const object = parsePatientData(obj) as PatientData;
+  object.id = obj.id;
+  return object;
+});
+
+export default patientEntries;

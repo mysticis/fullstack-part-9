@@ -1,6 +1,9 @@
 import patientData from "../data/patients";
-
-import { PatientData, PatientDataWithoutSSN } from "../types";
+import {
+  PatientData,
+  PatientDataWithoutSSN,
+  PatientDataWithoutID,
+} from "../types";
 
 const getPatients = (): Array<PatientData> => {
   return patientData;
@@ -15,8 +18,17 @@ const getInfoNoSSN = (): Array<PatientDataWithoutSSN> => {
     occupation,
   }));
 };
+const addPatient = (entry: PatientDataWithoutID): PatientData => {
+  const newPatientEntry = {
+    id: String(Math.floor(Math.random() * Math.floor(500))),
+    ...entry,
+  };
+  patientData.push(newPatientEntry);
+  return newPatientEntry;
+};
 
 export default {
   getPatients,
   getInfoNoSSN,
+  addPatient,
 };
