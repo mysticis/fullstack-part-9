@@ -6,6 +6,12 @@ const router = express.Router();
 router.get("/", (_req, res) => {
   res.send(patientService.getInfoNoSSN());
 });
+
+router.get("/:id", (req, res) => {
+  const id = String(req.params.id);
+
+  res.send(patientService.getPatient(id));
+});
 router.post("/", (req, res) => {
   try {
     const newPatientEntry = parsePatientData(req.body);
